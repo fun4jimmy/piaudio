@@ -45,6 +45,9 @@ def get_service(service_id):
 def set_service(service_id, state):
     """Set the state of the requested service object."""
     requested_service = find_service(service_id)
+    # Convert to an instance of ServiceState.
+    # This also checks for valid values and raises an error if no match is found.
+    state = ServiceState.from_value(state)
 
     if requested_service is None:
         return "Service {} not found.".format(service_id), 404

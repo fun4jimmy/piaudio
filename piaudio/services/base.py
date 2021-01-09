@@ -9,6 +9,16 @@ class ServiceState(enum.Enum):
     INACTIVE = "inactive"
     FAILED = "failed"
 
+    @classmethod
+    def from_value(cls, value):
+        """Return an instance of ServiceState that matches the given value."""
+        for e in cls:
+            if isinstance(e, ServiceState):
+                if e.value == value:
+                    return e
+
+        raise KeyError("No value matching '{}' found in enumeration {}.".format(value, cls.__name__))
+
 
 class BaseService(object):
     """The base interface class for all services."""
