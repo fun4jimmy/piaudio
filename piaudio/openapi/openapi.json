@@ -1,0 +1,136 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "piaudio",
+    "description": "Control over the currently running audio services and alsa configuration on a host Raspberry Pi computer.",
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    },
+    "version": "0.0.1"
+  },
+  "servers": [
+    {
+      "url": "/api/"
+    }
+  ],
+  "components": {
+    "parameters": {
+      "ServiceId": {
+        "name": "service_id",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "$ref": "#/components/schemas/ServiceId"
+        }
+      }
+    },
+    "schemas": {
+      "ServiceId": {
+        "type": "string",
+        "description": "A unique identifier for the service."
+      },
+      "ServiceState": {
+        "type": "string",
+        "description": "The state of the service used to describe whether it is currently active, inactive or failed.",
+        "enum": ["active", "inactive", "failed"]
+      },
+      "Service": {
+        "type": "object",
+        "description": "An audio service or daemon.",
+        "required": [
+          "id"
+        ],
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/ServiceId"
+          },
+          "name": {
+            "type": "string",
+            "description": "The UI friendly display name for the service. If none is specified the id should be used instead.",
+            "readOnly": true
+          },
+          "state": {
+            "$ref": "#/components/schemas/ServiceState"
+          }
+        }
+      }
+    }
+  },
+  "paths": {
+    "/services/": {
+      "get": {
+        "operationId": "piaudio.api.list_services",
+        "summary": "List the audio services and daemons supported by the host.",
+        "responses": {
+          "200": {
+            "description": "A list of audio services and daemons.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Service"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/service/{service_id}": {
+      "get": {
+        "operationId": "piaudio.api.get_service",
+        "summary": "Query a single audio service or daemon supported by the host.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/ServiceId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The requested audio services or daemon.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Service"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Audio service not found."
+          }
+        }
+      },
+      "post": {
+        "operationId": "piaudio.api.set_service",
+        "summary": "Set the state of an audio service or daemon. Only one service can be active at a time",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/ServiceId"
+          },
+          {
+            "name": "state",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/ServiceState"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Audio service state updated."
+          },
+          "404": {
+            "description": "Audio service not found."
+          },
+          "500": {
+            "description": "Failed to set the audio service state."
+          }
+        }
+      }
+    }
+  }
+}
