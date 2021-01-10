@@ -1,14 +1,18 @@
 <!DOCTYPE html>
 <html>
     <head>
-
+        <script src="/static/api.js"></script>
     </head>
     <body>
-        <form action="/api/service/alsaloop?state=active" method="post" target="_parent">
-            <input type="submit" value="alsaloop">
-        </form>
-        <form action="/api/service/plexamp?state=active" method="post" target="_parent">
-            <input type="submit" value="plexamp">
-        </form>
+        <div class="wrapper">
+            <div id="services">
+            {% for service in services %}
+                <div id="service">
+                    <input type="radio" name="service" id="{{ service.id }}" onclick="services.set('{{ service.id }}', 'active')">
+                    <label for="{{ service.id }}">{{ service.name }}</label>
+                </div>
+            {% endfor %}
+            </form>
+        </div>
     </body>
 </html>
