@@ -14,6 +14,31 @@ from piaudio.services import AlsaloopService
 from piaudio.services import PlexampService
 
 
+def bundle_javascript(environment):
+    """Define and register the bundle for javascript assets."""
+    contents = [
+        # Our own api client
+        'javascript/api.js',
+    ]
+    javascript_bundle = Bundle(*contents, filters='jsmin', output='bundles/packed.js')
+
+    environment.register('javascript_bundle', javascript_bundle)
+
+
+def bundle_sass(environment):
+    """Define and register the bundle for sass assets."""
+    # Configure the libsass asset compiler
+    environment.config['LIBSASS_STYLE'] = 'compressed'
+
+    contents = [
+        # The main stylesheet for the site
+        'sass/main.scss',
+    ]
+    css_bundle = Bundle(*contents, filters='libsass', output='bundles/packed.css')
+
+    environment.register('css_bundle', css_bundle)
+
+
 def make_app():
     """Flask application factory function."""
     application = connexion.FlaskApp(__name__, specification_dir='openapi')
@@ -27,14 +52,8 @@ def make_app():
     flask_application = application.app
 
     asset_environment = Environment(flask_application)
-
-    javascript_bundle = Bundle('javascript/api.js', filters='jsmin', output='bundles/packed.js')
-    asset_environment.register('javascript_bundle', javascript_bundle)
-
-    asset_environment.config['LIBSASS_STYLE'] = 'compressed'
-
-    css_bundle = Bundle('sass/main.scss', filters='libsass', output='bundles/packed.css')
-    asset_environment.register('css_bundle', css_bundle)
+    bundle_javascript(asset_environment)
+    bundle_sass(asset_environment)
 
     # we use blueprints, rather than define the routes within this function, to keep the code more modular
     flask_application.register_blueprint(index)
