@@ -1,80 +1,124 @@
-.wrapper {
-    margin: auto;
+@charset "utf-8";
 
-    padding-left: 0.6rem;
-    padding-right: 0.6rem;
+$font-size: 4.5rem;
+$font-family: Helvetica, Arial, sans-serif;
+
+$transition-time: 0.4s;
+
+$colour-palette:
+  #4a95b1,
+  #ACACAC,
+  #666666,
+  #222222,
+  #CF903E;
+
+$colour-alternate: nth($colour-palette, 1);
+$colour-base: nth($colour-palette, 2);
+$colour-background-alternate: nth($colour-palette, 3);
+$colour-background-base: nth($colour-palette, 4);
+$colour-accent: nth($colour-palette, 5);
+
+// Reset some basic elements, these must come before any other types
+body, h1, h2, h3, h4, h5, h6, p, blockquote, pre, hr, dl, dd, ol, ul, figure {
+  margin: 0;
+  padding: 0;
 }
 
+// Styling for text
+%text-base {
+  font-family: $font-family;
+  font-size: $font-size;
+  color: $colour-alternate;
+}
+
+%animated {
+  -webkit-transition: $transition-time;
+  transition: $transition-time;
+}
+
+// Base styling for text
 body {
-  color: #666666;
-  background-color: #222222;
-  font-family: Helvetica,Arial,sans-serif;
-  text-align: center;
+  @extend %text-base;
+  background-color: $colour-background-base;
 }
 
-#services {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  -ms-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
-}
+.service {
+  // define the colours for the service switch-style checkbox
+  $colour-on: $colour-accent;
+  $colour-off: $colour-alternate;
 
-/* We style the service div blocks so they are rendered vertically. */
-#service {
-  display: block;
-  position: relative;
-}
+  // use a flex box to center the item vertically
+  display: flex;
+  align-items: center;
 
-/* We hide the default radio button as it cannot be styled. */
-#service input[type="radio"] {
-  display: none;
-}
+  input[type="checkbox"] {
+    display: none;
+  }
 
-/* We inject an element before the label to be our radio input. */
-#service input[type="radio"] + label::before {
-  content: "";
-  display: inline-block;
+  label {
+    @extend %animated;
 
-  background: #222222;
+    display: flex;
+    align-items: center;
 
-  border-color: #4a95b1;
-  border-radius: 50%;
-  border-style: solid;
-  border-width: 0.4rem;
+    // this allows us to position the slider component relative to the label
+    position: relative;
 
-  margin-right: 0.3rem;
+    color: $colour-off;
+  }
 
-  height: 3.5rem;
-  width: 3.5rem;
+  input[type="checkbox"]:checked + label {
+    color: $colour-on;
+  }
 
-  vertical-align: middle;
-}
+  // switch background using the label before pseudo element
 
-#service label {
-  color: #4a95b1;
-  font-size: 4.5rem;
-  font-weight: bold;
-  vertical-align: middle;
-}
+  $switch-height: 0.6 * $font-size;
+  $switch-width: 1.5 * $switch-height;
 
-/* When the radio input is checked, we add a radial-gradient background to simulate the check within the radio circle outline. */
-#service input[type="radio"]:checked + label::before {
-  /* Using a slight fade between the colour and the transparent outer ring to add some aliasing. */
-  background: radial-gradient(#4a95b1 0%, #4a95b1 48%, transparent 50%, transparent);
-}
+  input[type="checkbox"] + label:before {
+    @extend %animated;
 
-/* When hovered we change the colour of label text. */
-#service label:hover {
-  color: #cf903e;
-}
+    content: "";
 
-/* When hovered we change the colour of our injected radio input. */
-#service input[type="radio"]:hover + label::before {
-  border-color: #cf903e;
-}
+    height: $switch-height;
+    width: $switch-width;
 
-/* When the injected radio input is hovered and checked we change the colour of the inner check mark. */
-#service input[type="radio"]:checked + label:hover::before {
-  background: radial-gradient(#cf903e 0%, #cf903e 48%, transparent 50%, transparent);
+    border-radius: 0.5 * $switch-height;
+    background-color: $colour-off;
+  }
+
+  input[type="checkbox"]:checked + label:before {
+    background-color: $colour-on;
+  }
+
+  // slider inside the switch using the label after pseudo element
+
+  $slider-height: 0.8 * $switch-height;
+  $slider-width: $slider-height;
+  $slider-margin: 0.125 * $switch-height;
+
+  input[type="checkbox"] + label:after {
+    @extend %animated;
+
+    content: "";
+
+    // manually position inside the switch
+    position: absolute;
+
+    top: 50%;
+    left: $slider-margin;
+    height: $slider-height;
+    width: $slider-width;
+
+    // this is to center vertically
+    transform: translate(0%, -50%);
+
+    border-radius: 50%;
+    background-color: $colour-background-base;
+  }
+
+  input[type="checkbox"]:checked + label:after {
+    transform: translate($switch-width - ($slider-width + 2 * $slider-margin), -50%);
+  }
 }

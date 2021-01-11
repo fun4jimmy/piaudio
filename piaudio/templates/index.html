@@ -10,14 +10,14 @@
     </head>
     <body>
         <div class="wrapper">
-            <div id="services">
+            <ul>
             {% for service in services %}
-                <div id="service">
-                    <input type="radio" name="service" id="{{ service.id }}" onclick="services.set('{{ service.id }}', 'active')">
+                <li class="service">
+                    <input type="checkbox" name="{{ service.id }}" id="{{ service.id }}" onclick="services.set('{{ service.id }}', 'active')">
                     <label for="{{ service.id }}">{{ service.name }}</label>
-                </div>
+                </li>
             {% endfor %}
-            </form>
+            </ul>
         </div>
     </body>
 </html>
