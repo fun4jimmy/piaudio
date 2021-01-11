@@ -1,8 +1,12 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <link rel="stylesheet" href="/static/main.css">
-        <script src="/static/api.js"></script>
+    {% assets "css_bundle" %}
+        <link rel="stylesheet" href="{{ ASSET_URL }}">
+    {% endassets %}
+    {% assets "javascript_bundle" %}
+        <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+    {% endassets %}
     </head>
     <body>
         <div class="wrapper">
