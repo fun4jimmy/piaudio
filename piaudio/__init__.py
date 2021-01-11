@@ -17,6 +17,8 @@ from piaudio.services import PlexampService
 def bundle_javascript(environment):
     """Define and register the bundle for javascript assets."""
     contents = [
+        # jQuery library https://jquery.com/
+        'javascript/jquery-3.5.1.js',
         # Our own api client
         'javascript/api.js',
     ]
