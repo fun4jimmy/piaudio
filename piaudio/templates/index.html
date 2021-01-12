@@ -14,7 +14,7 @@
             {% for service in services %}
                 <li class="service">
                     <input type="checkbox" name="{{ service.id }}" id="{{ service.id }}" onclick="services.set('{{ service.id }}', 'active')">
-                    <label for="{{ service.id }}">{{ service.name }}</label>
+                    <label for="{{ service.id }}"><span class="checkbox" role="presentation"></span>{{ service.name }}</label>
                 </li>
             {% endfor %}
             </ul>

@@ -20,6 +20,7 @@ $colour-accent: nth($colour-palette, 5);
 
 // Reset some basic elements, these must come before any other types
 body, h1, h2, h3, h4, h5, h6, p, blockquote, pre, hr, dl, dd, ol, ul, figure {
+  line-height: 1em;
   margin: 0;
   padding: 0;
 }
@@ -47,78 +48,72 @@ body {
   $colour-on: $colour-accent;
   $colour-off: $colour-alternate;
 
-  // use a flex box to center the item vertically
-  display: flex;
-  align-items: center;
-
-  input[type="checkbox"] {
-    display: none;
-  }
-
-  label {
-    @extend %animated;
-
-    display: flex;
-    align-items: center;
-
-    // this allows us to position the slider component relative to the label
-    position: relative;
-
-    color: $colour-off;
-  }
-
-  input[type="checkbox"]:checked + label {
-    color: $colour-on;
-  }
-
-  // switch background using the label before pseudo element
-
+  // define the sizes of the checkbox elements
   $switch-height: 0.6 * $font-size;
   $switch-width: 1.5 * $switch-height;
-
-  input[type="checkbox"] + label:before {
-    @extend %animated;
-
-    content: "";
-
-    height: $switch-height;
-    width: $switch-width;
-
-    border-radius: 0.5 * $switch-height;
-    background-color: $colour-off;
-  }
-
-  input[type="checkbox"]:checked + label:before {
-    background-color: $colour-on;
-  }
-
-  // slider inside the switch using the label after pseudo element
 
   $slider-height: 0.8 * $switch-height;
   $slider-width: $slider-height;
   $slider-margin: 0.125 * $switch-height;
 
-  input[type="checkbox"] + label:after {
-    @extend %animated;
+  input[type="checkbox"] {
+    display: none;
 
-    content: "";
+    + label {
+      @extend %animated;
 
-    // manually position inside the switch
-    position: absolute;
+      color: $colour-off;
 
-    top: 50%;
-    left: $slider-margin;
-    height: $slider-height;
-    width: $slider-width;
+      // checkbox switch using an child element of label
+      .checkbox {
+        @extend %animated;
 
-    // this is to center vertically
-    transform: translate(0%, -50%);
+        // this allows the slider to be positioned relative to the switch
+        display: inline-block;
+        position: relative;
 
-    border-radius: 50%;
-    background-color: $colour-background-base;
+        height: $switch-height;
+        width: $switch-width;
+
+        border-radius: 0.5 * $switch-height;
+        background-color: $colour-off;
+      }
+
+      // checbox slider using a psuedo element of the child element of label
+      .checkbox:after {
+        @extend %animated;
+
+        content: "";
+
+        // manually position the slider inside the switch
+        position: absolute;
+
+        top: 50%;
+        left: $slider-margin;
+        height: $slider-height;
+        width: $slider-width;
+
+        // this is to center vertically
+        transform: translate(0%, -50%);
+
+        border-radius: 50%;
+        background-color: $colour-background-base;
+      }
+    }
   }
 
-  input[type="checkbox"]:checked + label:after {
-    transform: translate($switch-width - ($slider-width + 2 * $slider-margin), -50%);
+  // Updated state while the checkbox is checked
+  input[type="checkbox"]:checked {
+    + label {
+      color: $colour-on;
+
+      .checkbox {
+        background-color: $colour-on;
+      }
+
+      .checkbox:after {
+        transform: translate($switch-width - ($slider-width + 2 * $slider-margin), -50%);
+      }
+    }
   }
 }
