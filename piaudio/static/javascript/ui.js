@@ -7,11 +7,12 @@ const ui = {
     serviceCheckBox.click(function () {
       const serviceId = $(this).attr("id");
 
+      // We don't add a .then() handler as we don't need to do anything on success that isn't covered by .finally().
       services.set(serviceId, "active")
-        .then((response) => {
-          if (!response.ok) {
-            // todo : display error
-          }
+        .catch(error => {
+          // handle error
+        })
+        .finally(() => {
           setTimeout(ui.update, 500);
         });
     });
@@ -27,9 +28,14 @@ const ui = {
 
       services.get(serviceId)
         .then((service) => {
-          $(this).prop("checked", service.state === "active");
+          if (service !== null) {
+            $(this).prop("checked", service.state === "active");
+          } else {
+            // handle service not found
+          }
         })
         .catch(error => {
+          // Uncheck any services whose get call failed so they are not displayed as active.
           $(this).prop("checked", false);
         });
     });

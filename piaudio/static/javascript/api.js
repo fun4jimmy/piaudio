@@ -1,28 +1,41 @@
 const services = {
-  list: async function () {
+  list: function () {
     return fetch("/api/services/")
       .then(response => {
-        if (!response.ok) {
-          // indicate error
-          return null;
+        switch (response.status) {
+          case 200:
+            return response.json();
+          default:
+            throw new Error(`services.list() failed: ${response.statusText}.`);
         }
-        return response.json();
       });
   },
-  get: async function (service_id) {
+  get: function (service_id) {
     return fetch(`/api/service/${service_id}`)
       .then(response => {
-        if (!response.ok) {
-          // indicate error
-          return null;
+        switch (response.status) {
+          case 200:
+            return response.json();
+          case 404:
+            return null;
+          default:
+            throw new Error(`services.get(${service_id}) failed: ${response.statusText}.`);
         }
-        return response.json();
-      })
+      });
   },
-  set: async function (service_id, state) {
+  set: function (service_id, state) {
     return fetch(`/api/service/${service_id}?state=${state}`, { method: "POST" })
       .then(response => {
-        return response;
-      })
+        if (response.ok) {
+          return;
+        }
+
+        switch (response.status) {
+          case 404:
+          case 500:
+          default:
+            throw new Error(`services.set(${service_id}, ${state}) failed: ${response.statusText}.`);
+        }
+      });
   },
 };
