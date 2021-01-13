@@ -1,4 +1,7 @@
 .vscode
 .webassets-cache
 __pycache__
+build
+dist
+piaudio.egg-info
 venv
