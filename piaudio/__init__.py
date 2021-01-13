@@ -21,6 +21,8 @@ def bundle_javascript(environment):
         'javascript/jquery-3.5.1.js',
         # Our own api client
         'javascript/api.js',
+        # Our own ui code
+        'javascript/ui.js',
     ]
     javascript_bundle = Bundle(*contents, filters='jsmin', output='bundles/packed.js')
 
