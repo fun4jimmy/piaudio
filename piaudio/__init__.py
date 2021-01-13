@@ -14,6 +14,9 @@ from piaudio.services import AlsaloopService
 from piaudio.services import PlexampService
 
 
+__version__ = '0.0.1'
+
+
 def bundle_javascript(environment):
     """Define and register the bundle for javascript assets."""
     contents = [
