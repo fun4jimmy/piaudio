@@ -9,6 +9,9 @@ const ui = {
 
       services.set(serviceId, "active")
         .then((response) => {
+          if (!response.ok) {
+            // todo : display error
+          }
           setTimeout(ui.update, 500);
         });
     });
