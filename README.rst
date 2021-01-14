@@ -22,10 +22,14 @@ Requirements
 Installation
 ------------
 
+The installation requires setuptools 46.4.0 or later.
+
 .. code-block::
 
-    pip install https://github.com/fun4jimmy/piaudio
+    pip install --upgrade setuptools
+    pip install https://github.com/fun4jimmy/piaudio/archive/main.tar.gz
 
+To install a specific version change the github link to refer to one of the release bundles eg. https://github.com/fun4jimmy/piaudio/archive/v1.0.0.tar.gz.
 
 .. _Flask: https://flask.palletsprojects.com/
 .. _Connexions: https://flask.palletsprojects.com/
