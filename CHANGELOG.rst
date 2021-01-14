@@ -5,6 +5,7 @@ Changelog (piaudio)
 
 - Update setup.py to fail with a helpful message if the wrong version of setuptools is found when installing.
 - Fix the name of the Flask-Assets package in the install_requires dependencies.
+- Fix the path to the OpenAPI definition in MANIFEST.in so it is included when the package is installed.
 
 0.0.1 (2021-01-13)
 ------------------
