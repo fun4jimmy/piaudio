@@ -1,5 +1,5 @@
 include piaudio/openapi/openapi.json
 global-include *.html
 global-include *.js
-global-include *.sass
+global-include *.scss
 prune bundles
