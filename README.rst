@@ -1,6 +1,6 @@
-#######
+=======
 piaudio
-#######
+=======
 
 piaudio is a web application designed to run on a Raspberry Pi, allowing the control of audio services via a web frontend. This allows the Raspberry Pi to be controlled via a web browser on a phone, instead of remoting on to the device and stopping and starting the various services via the command line.
 
