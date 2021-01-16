@@ -1,7 +1,9 @@
 @charset "utf-8";
 
-$font-size: 4.5rem;
+$screen-width-narrow: 980px;
+
 $font-family: Helvetica, Arial, sans-serif;
+$font-size: 150px;
 
 $transition-time: 0.4s;
 
@@ -18,38 +20,128 @@ $colour-background-alternate: nth($colour-palette, 3);
 $colour-background-base: nth($colour-palette, 4);
 $colour-accent: nth($colour-palette, 5);
 
-// Reset some basic elements, these must come before any other types
-body, h1, h2, h3, h4, h5, h6, p, blockquote, pre, hr, dl, dd, ol, ul, figure {
-  line-height: 1em;
-  margin: 0;
-  padding: 0;
+// When the screen is oriented in a landscape orientation, include the nested content block.
+@mixin when-screen-landscape() {
+  @media screen and (orientation: landscape) {
+    @content;
+  }
+}
+
+// When the screen is oriented in a portrait orientation, include the nested content block.
+@mixin when-screen-portrait() {
+  @media screen and (orientation: portrait) {
+    @content;
+  }
+}
+
+// When the screen height is less than the given size, include the nested content block.
+@mixin when-screen-height-le($height) {
+  @media screen and (max-height: $height) {
+    @content;
+  }
+}
+
+// When the screen width is less than the given size, include the nested content block.
+@mixin when-screen-width-le($width) {
+  @media screen and (max-width: $width) {
+    @content;
+  }
+}
+
+// Set the animation properties for a list of types.
+@mixin set-animated($types...) {
+  // setting the transition properties once per type causes only the last type to be used,
+  // we have to build the list and set the property once for it to apply to all types.
+  $transition-list: ();
+
+  @each $type in $types {
+    $transition-list: append($transition-list, ($type $transition-time), $separator: comma);
+  }
+
+  -webkit-transition: $transition-list;
+  transition: $transition-list;
 }
 
 // Styling for text
 %text-base {
+  color: $colour-base;
+
   font-family: $font-family;
   font-size: $font-size;
-  color: $colour-alternate;
+  font-weight: normal;
+
+  @include when-screen-height-le(3 * $font-size) {
+    font-size: 100px;
+  }
+}
+
+%heading-base {
+  @extend %text-base;
+
+  font-weight: bold;
 }
 
 %animated {
-  -webkit-transition: $transition-time;
-  transition: $transition-time;
+  // Specifically list the animated properties so we don't animated changes in size when changing screen size and orientation.
+  @include set-animated(background-color, color, transform);
+}
+
+// Reset some basic elements, these must come before any other types
+body, h1, h2, h3, h4, h5, h6, p, blockquote, pre, hr, dl, dd, ol, ul, figure {
+  @extend %text-base;
+  margin: 0.1em;
+  padding: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  @extend %heading-base;
 }
 
 // Base styling for text
 body {
-  @extend %text-base;
   background-color: $colour-background-base;
 }
 
-.service {
+.wrapper {
+  width: 100%;
+}
+
+h1.title {
+  color: $colour-accent;
+
+  font-size: 1.8em;
+
+  text-align: center;
+
+  @include when-screen-landscape() {
+    font-size: 1.0em;
+    float: left;
+    writing-mode:vertical-rl;
+    transform:scale(-1);
+  }
+}
+
+.content {
+  width: fit-content;
+  margin: auto
+}
+
+ul {
+  list-style-type: none;
+}
+
+li.service {
   // define the colours for the service switch-style checkbox
-  $colour-on: $colour-accent;
-  $colour-off: $colour-alternate;
+  $label-colour-on: $colour-alternate;
+  $label-colour-off: $colour-alternate;
+
+  $switch-colour-on: $colour-alternate;
+  $switch-colour-off: $colour-base;
 
   // define the sizes of the checkbox elements
-  $switch-height: 0.6 * $font-size;
+
+  // using 1em makes the switch relative to the element font size
+  $switch-height: 0.6 * 1em;
   $switch-width: 1.5 * $switch-height;
 
   $slider-height: 0.8 * $switch-height;
@@ -62,21 +154,23 @@ body {
     + label {
       @extend %animated;
 
-      color: $colour-off;
+      color: $label-colour-off;
 
       // checkbox switch using an child element of label
       .checkbox {
         @extend %animated;
 
-        // this allows the slider to be positioned relative to the switch
         display: inline-block;
+        // this allows the slider to be positioned relative to the switch
         position: relative;
 
         height: $switch-height;
         width: $switch-width;
 
+        margin-right: 0.2em;
+
         border-radius: 0.5 * $switch-height;
-        background-color: $colour-off;
+        background-color: $switch-colour-off;
       }
 
       // checbox slider using a psuedo element of the child element of label
@@ -105,10 +199,10 @@ body {
   // Updated state while the checkbox is checked
   input[type="checkbox"]:checked {
     + label {
-      color: $colour-on;
+      color: $label-colour-on;
 
       .checkbox {
-        background-color: $colour-on;
+        background-color: $switch-colour-on;
       }
 
       .checkbox:after {
