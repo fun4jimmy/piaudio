@@ -5,6 +5,8 @@ Changelog (piaudio)
 0.0.3 (2021-01-16)
 ==================
 
+- Add a minimum python version requirement of 3.8 due to use of shlex.join().
+
 0.0.2 (2021-01-14)
 ==================
 

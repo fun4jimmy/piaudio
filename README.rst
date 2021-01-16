@@ -16,7 +16,7 @@ Requirements
 ============
 
 - Raspberry Pi or similar Unix device.
-- Python 3.8 (may work with earlier versions).
+- Python 3.8 or later.
 - alsaloop.
 - Plexamp (See the Plex forums_ for instructions on installing Plexamp for Raspberry Pi v.20 beta 2 as a service).
 
