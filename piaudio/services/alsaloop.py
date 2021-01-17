@@ -10,7 +10,7 @@ class AlsaloopService(BaseService):
 
     def __init__(self):
         super().__init__("alsaloop")
-        self.playback_device = "dmixer"
+        self.playback_device = "default"
         self.playback_rate = 48000
         self.latency_usec = 10000
         # 0 means no sync

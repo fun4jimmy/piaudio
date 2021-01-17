@@ -9,6 +9,7 @@ Changelog (piaudio)
 - Allow calls to subprocess.run to return non-zero exit codes without raising an exception as this is how some services check if they are currently running.
 - Fix the service checkbox handling code so it is not always trying to set the corresponding service to active.
 - Fix wake argument to alsaloop activation command line, '--wake=N' is not valid even though the command help text lists it.
+- Change the playback device for the alsaloop service to default. The dmixer device was found to consume too much cpu after a long period of running.
 
 0.0.2 (2021-01-14)
 ==================
