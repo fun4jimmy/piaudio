@@ -6,9 +6,10 @@ const ui = {
 
     serviceCheckBox.click(function () {
       const serviceId = $(this).attr("id");
+      const requestedState = $(this).prop("checked") ? "active" : "inactive";
 
       // We don't add a .then() handler as we don't need to do anything on success that isn't covered by .finally().
-      services.set(serviceId, "active")
+      services.set(serviceId, requestedState)
         .catch(error => {
           // handle error
         })
