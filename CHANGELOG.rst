@@ -8,6 +8,7 @@ Changelog (piaudio)
 - Add a minimum python version requirement of 3.8 due to use of shlex.join().
 - Allow calls to subprocess.run to return non-zero exit codes without raising an exception as this is how some services check if they are currently running.
 - Fix the service checkbox handling code so it is not always trying to set the corresponding service to active.
+- Fix wake argument to alsaloop activation command line, '--wake=N' is not valid even though the command help text lists it.
 
 0.0.2 (2021-01-14)
 ==================

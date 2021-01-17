@@ -48,7 +48,8 @@ class AlsaloopService(BaseService):
                 '--rate={}'.format(self.playback_rate),
                 '--tlatency={}'.format(self.latency_usec),
                 '--sync={}'.format(self.sync_mode),
-                '--wake={}'.format(self.wake_timeout),
+                '-W',
+                '{}'.format(self.wake_timeout),
                 ]
             return run_process(arguments) == 0
 
