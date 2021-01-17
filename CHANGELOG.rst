@@ -6,6 +6,7 @@ Changelog (piaudio)
 ==================
 
 - Add a minimum python version requirement of 3.8 due to use of shlex.join().
+- Allow calls to subprocess.run to return non-zero exit codes without raising an exception as this is how some services check if they are currently running.
 
 0.0.2 (2021-01-14)
 ==================
